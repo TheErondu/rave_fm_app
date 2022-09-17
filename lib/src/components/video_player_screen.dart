@@ -3,22 +3,23 @@ import 'package:flutter/services.dart';
 import '../models/videos_list.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class LiveTvScreen extends StatefulWidget {
-    static const routeName = '/live/tv';
+class VideoPlayerScreen extends StatefulWidget {
   //
-  const LiveTvScreen(
+  const VideoPlayerScreen(
       {Key? key,
+      required this.videoItem,
       this.onEnterFullScreen,
       this.onExitFullScreen})
       : super(key: key);
+  final VideoItem videoItem;
   final VoidCallback? onEnterFullScreen;
   final VoidCallback? onExitFullScreen;
 
   @override
-  LiveTvScreenState createState() => LiveTvScreenState();
+  VideoPlayerScreenState createState() => VideoPlayerScreenState();
 }
 
-class LiveTvScreenState extends State<LiveTvScreen> {
+class VideoPlayerScreenState extends State<VideoPlayerScreen> {
   //
   late YoutubePlayerController _controller;
   late bool _isPlayerReady;
@@ -29,7 +30,8 @@ class LiveTvScreenState extends State<LiveTvScreen> {
     super.initState();
     _isPlayerReady = false;
     _controller = YoutubePlayerController(
-      initialVideoId:"VEyS51y4-Jg",
+      initialVideoId:
+          widget.videoItem.video?.resourceId?.videoId ?? "pUUOOmoaMZM",
       flags: const YoutubePlayerFlags(
         mute: false,
         autoPlay: true,
@@ -73,9 +75,9 @@ class LiveTvScreenState extends State<LiveTvScreen> {
           : AppBar(
               backgroundColor: Colors.black,
               centerTitle: true,
-              title: const Text(
-               "Western Spring Television Live Stream",
-                style: TextStyle(
+              title: Text(
+                widget.videoItem.video?.title ?? "null",
+                style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
